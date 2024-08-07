@@ -22,6 +22,15 @@ else:
     ax.axis('on')
     ax.set_facecolor('black')
     ax.set(xlim=[-x_max, x_max], ylim=[-y_max, y_max], zlim=[-z_max, z_max])
+    ax.xaxis.pane.set(visible=False)
+    ax.yaxis.pane.set(visible=False)
+    ax.zaxis.pane.set(visible=False)
+    ax.xaxis._axinfo['grid'].update(color='none')
+    ax.yaxis._axinfo['grid'].update(color='none')
+    ax.zaxis._axinfo['grid'].update(color='none')
+    ax.xaxis.line.set(color='gray')
+    ax.yaxis.line.set(color='gray')
+    ax.zaxis.line.set(color='gray')
     a = np.linspace(0, 2*np.pi, mt.ceil(2*np.pi*scaler))
 
     ax.plot([X], [Y], [Z], color='blue', marker='.')
@@ -54,6 +63,7 @@ else:
     plt.tight_layout()
 
     anim = fa(fig, init_func=init, func=rotation, frames=np.concatenate([np.linspace(p*np.pi, (p+1)*np.pi, mt.ceil(np.pi*(2+1/(1+np.exp(p))))) for p in range(-20, 100)], axis=0),
-            interval=0, blit=False) # change the volcety of point by adding 1, p to p+1 where p is mapping of custumized simoid function
+            interval=0, blit=False) # change the volcety of point by adding 1, p to p+1 where p is mapping of custumized sigmoid function
     #anim.save('video.mp4', fps=60, writer='ffmpeg', dpi=300, bitrate=10**3)
     plt.show()
+    
