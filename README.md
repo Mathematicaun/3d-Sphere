@@ -17,3 +17,7 @@ You can install these libraries using pip:
 
 ```bash
 pip install numpy matplotlib
+```
+
+## Author
+AYOUB ZAHRAN
