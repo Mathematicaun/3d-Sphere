@@ -1,69 +1,106 @@
 import numpy as np
 import matplotlib.pyplot as plt
-import math as mt
-from matplotlib.animation import FuncAnimation as fa
 
-r = 50          # the raduis of 3d-sphere
-ld = 2        # The distance between 2d-circles
-scaler = 100   # The scaller for the cardinality of the closed interval [0, 2pi]
-x_max = 100     # The boundary sapce along x-axis
-y_max = 100    # The boundary sapce along y-axis
-z_max = 100     # The boundary sapce along z-axis
-X = 40          # x coordinaite
-Y = 40           # y coordinaite
-Z = 10          # z coordinaite
+# you can uncomment the following code to use GUI to show the fiugre
+# import customtkinter as tk
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
-if (X+r > x_max or X-r < -x_max) or (Y+r > y_max or Y-r < -y_max) or (Z+r > z_max or Z-r < -z_max):
-    print('The 3d-Sphere is out of the Space')
-else:
-    plt.style.use('dark_background')
-    fig = plt.figure()
-    ax = fig.add_subplot(projection='3d', aspect='equal')
-    ax.axis('on')
-    ax.set_facecolor('black')
-    ax.set(xlim=[-x_max, x_max], ylim=[-y_max, y_max], zlim=[-z_max, z_max])
+n = 5
+
+# you can uncomment the following code to use GUI to show the fiugre
+# root = tk.CTk()
+# root.title('3 Dimensional Sphere')
+# frame = tk.CTkFrame(
+#     master=root
+# )
+# frame.pack(fill=tk.BOTH, expand=True)
+
+fig = plt.figure()
+ax = fig.add_subplot(projection='3d', aspect='equal')
+# setting
+def settings():
+    fig.set_facecolor('#131315')
+    ax.set_xlabel('x', color='pink')
+    ax.set_ylabel('y', color='pink')
+    ax.set_zlabel('z', color='pink')
+    ax.set_facecolor('#131315')
     ax.xaxis.pane.set(visible=False)
     ax.yaxis.pane.set(visible=False)
     ax.zaxis.pane.set(visible=False)
+
     ax.xaxis._axinfo['grid'].update(color='none')
     ax.yaxis._axinfo['grid'].update(color='none')
     ax.zaxis._axinfo['grid'].update(color='none')
-    ax.xaxis.line.set(color='gray')
-    ax.yaxis.line.set(color='gray')
-    ax.zaxis.line.set(color='gray')
-    a = np.linspace(0, 2*np.pi, mt.ceil(2*np.pi*scaler))
 
-    ax.plot([X], [Y], [Z], color='blue', marker='.')
+    ax.xaxis.line.set(color='#ebfb73')
+    ax.yaxis.line.set(color='#ebfb73')
+    ax.zaxis.line.set(color='#ebfb73')
 
-    S = []
-    i = Z-r
+    ax.set(
+        xlim=[-n, n],
+        ylim=[-n, n],
+        zlim=[-n, n],
+        xticks=np.arange(-n, n, 1),
+        yticks=np.arange(-n, n, 1),
+        zticks=np.arange(-n, n, 1)
+    )
 
-    while i < Z+r+ld:
-        ax.plot(np.sqrt(r**2-(i-Z)**2)*np.cos(a)+X, np.sqrt(r**2-(i-Z)**2)*np.sin(a)+Y, [i]*len(a), color=[1/2, 1/4, 1/16, .9][::-1])
-        point, = ax.plot([], [], [], marker='.', color='white')
-        S.append(point)
-        i += ld
+    ax.tick_params(axis='x', color='#ebfb73')
+    ax.tick_params(axis='y', color='#ebfb73')
+    ax.tick_params(axis='z', color='#ebfb73')
 
-    def init():
-        for sca in S:
-            sca.set_data([], [])
-            sca.set_3d_properties([])
-        return S
+    # ax.set_xticklabels([f'{_}' for _ in np.arange(-min, min)], color='#ebfb73', font='serif')
+    # ax.set_yticklabels([f'{_}' for _ in np.arange(-min, min)], color='#ebfb73', font='serif')
+    # ax.set_zticklabels([f'{_}' for _ in np.arange(-min, min)], color='#ebfb73', font='serif')
+settings()
 
-    z = np.arange(Z-r, Z+r+ld, ld)
 
-    def rotation(_):
-        for sca, i in zip(S, z):
-            x, y = np.sqrt(r**2-(i-Z)**2)*np.cos(_/np.sqrt(r**2-i**2))+X, np.sqrt(r**2-(i-Z)**2)*np.sin(_/np.sqrt(r**2-i**2))+Y
-            sca.set_data([x], [y])
-            sca.set_3d_properties([i])
-        return S
-        
-    ax.view_init(azim=30, elev=20)
-    plt.tight_layout()
+X, Y, Z = 0, 0, 0
+r = 4
+w = 2*np.pi
+_ = np.linspace(0, w, 100)
+stepsL = stepsS = .4
 
-    anim = fa(fig, init_func=init, func=rotation, frames=np.concatenate([np.linspace(p*np.pi, (p+1)*np.pi, mt.ceil(np.pi*(2+1/(1+np.exp(p))))) for p in range(-20, 100)], axis=0),
-            interval=0, blit=False) # change the volcety of point by adding 1, p to p+1 where p is mapping of custumized sigmoid function
-    #anim.save('video.mp4', fps=60, writer='ffmpeg', dpi=300, bitrate=10**3)
-    plt.show()
-    
+if r + Z >= n or -r + Z <= -n:
+    print('the sphere is out of the space')
+else:
+    for i in np.arange(0, 2*r, stepsL):
+        ax.plot(
+            np.sqrt(r**2 - (i-(Z+r))**2)*np.cos(_)+X,
+            np.sqrt(r**2 - (i-(Z+r))**2)*np.sin(_)+Y,
+            np.array([i]*len(_))+Z-r,
+            color='c'
+        )
+    for i in np.arange(0, 2*r, stepsL):
+        ax.plot(
+            np.sqrt(r**2 - (i-(Y+r))**2)*np.sin(_)+Y,
+            np.array([i]*len(_))+Y-r,
+            np.sqrt(r**2 - (i-(Y+r))**2)*np.cos(_)+Z,
+            color='c'
+        )    
+    for i in np.arange(0, 2*r, stepsL):
+        ax.plot(
+            np.array([i]*len(_))+X-r,
+            np.sqrt(r**2 - (i-(X+r))**2)*np.cos(_)+Y,
+            np.sqrt(r**2 - (i-(X+r))**2)*np.sin(_)+Z,
+            color='c'
+        )
+    for i in np.arange(0, w, stepsS):
+        ax.plot(
+            r*np.cos(i)*np.cos(_)+X,
+            r*np.sin(i)*np.cos(_)+Y,
+            r*np.sin(_)+Z,
+            color='c'
+        )
+
+ax.view_init(elev=0)
+plt.show()
+# you can uncomment the following code to use GUI to show the fiugre
+# canvas = FigureCanvasTkAgg(
+#     fig,
+#     master=frame
+# )
+# canvas.draw()
+# canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True)
+
+# root.mainloop()
