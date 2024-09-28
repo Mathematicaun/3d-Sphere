@@ -58,40 +58,13 @@ settings()
 X, Y, Z = 0, 0, 0
 r = 4
 w = 2*np.pi
-_ = np.linspace(0, w, 100)
+_ = np.linspace(0, w, 30)
 stepsL = stepsS = .4
-
+t1, t2 = np.meshgrid(_, _)
 if r + Z >= n or -r + Z <= -n:
     print('the sphere is out of the space')
 else:
-    for i in np.arange(0, 2*r, stepsL):
-        ax.plot(
-            np.sqrt(r**2 - (i-(Z+r))**2)*np.cos(_)+X,
-            np.sqrt(r**2 - (i-(Z+r))**2)*np.sin(_)+Y,
-            np.array([i]*len(_))+Z-r,
-            color='c'
-        )
-    for i in np.arange(0, 2*r, stepsL):
-        ax.plot(
-            np.sqrt(r**2 - (i-(Y+r))**2)*np.sin(_)+Y,
-            np.array([i]*len(_))+Y-r,
-            np.sqrt(r**2 - (i-(Y+r))**2)*np.cos(_)+Z,
-            color='c'
-        )    
-    for i in np.arange(0, 2*r, stepsL):
-        ax.plot(
-            np.array([i]*len(_))+X-r,
-            np.sqrt(r**2 - (i-(X+r))**2)*np.cos(_)+Y,
-            np.sqrt(r**2 - (i-(X+r))**2)*np.sin(_)+Z,
-            color='c'
-        )
-    for i in np.arange(0, w, stepsS):
-        ax.plot(
-            r*np.cos(i)*np.cos(_)+X,
-            r*np.sin(i)*np.cos(_)+Y,
-            r*np.sin(_)+Z,
-            color='c'
-        )
+    ax.plot_surface(r*np.cos(t1)*np.cos(t2), r*np.cos(t1)*np.sin(t2), r*np.sin(t1), color='none', edgecolor='white', alpha=.4)
 
 ax.view_init(elev=0)
 plt.show()
