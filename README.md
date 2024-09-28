@@ -11,8 +11,10 @@ $x^2 + y^2 + z^2 = r^2$
 ### 2. Circle Parameterization
 Each circular cross-section of the sphere can be parameterized using polar coordinates:
 
-$x(\theta) = r \cos(\theta)\quad\text{and}\quad y(\theta) = r \sin(\theta)$
-where $\theta$ is the angular parameter that varies from $0$ to $2\pi$.
+$x(\rho,\theta)=r\cos(\rho)\cos(\theta)+x_{i}$\
+$y(\rho,\theta)=r\cos(\rho)\sin(\theta)+y_{i}$\
+$z(\rho)=rsin(\rho)+z_{i}$\
+where $\mu_{i}$ is the position on $\mu$ axis and ($\theta$, $\rho$) is a pair that in $[0$, $2\pi]^2$.
 
 ### 3. 3D Cross-Sections
 The sphere is constructed by plotting circular cross-sections along each of the three axes:
